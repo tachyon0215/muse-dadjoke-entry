@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Write the entry line to entry.txt. Deterministic, stdlib only."""
+"""Write a one-line dad joke to entry.txt.
+
+Entry for make.fun's "Dad Joke Showdown": a bedtime anti-gravity
+joke told in a father's voice, with the punchline held to the last
+three words ("Nobody can."). Deterministic: a fixed text, no
+network, no randomness, no clock.
+"""
 import os
 from pathlib import Path
 
@@ -8,9 +14,14 @@ TEXT = LINE + "\n"
 MAX_CHARS = 200
 
 
+MIN_CHARS = 1
+
+
 def validate(text: str) -> None:
-    if not (1 <= len(text.rstrip("\n")) <= MAX_CHARS):
+    if not (MIN_CHARS <= len(text.rstrip("\n")) <= MAX_CHARS):
         raise ValueError("entry length out of range")
+    if text.rstrip("\n") != text.rstrip("\n").strip():
+        raise ValueError("entry must not carry padding spaces")
     if not text.strip():
         raise ValueError("entry must not be only whitespace")
     body = text[:-1] if text.endswith("\n") else text
